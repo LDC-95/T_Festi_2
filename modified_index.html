@@ -1,0 +1,47 @@
+
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Keynote</title>
+    <meta name="viewport" content="initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,width=device-width"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body id="body" bgcolor="black">
+    <div id="stageArea">
+        <div id="stage" class="stage"></div>
+        <div id="hyperlinkPlane" class="stage"></div>
+    </div>
+    <div id="slideshowNavigator"></div>
+    <div id="slideNumberControl"></div>
+    <div id="slideNumberDisplay"></div>
+    <div id="helpPlacard"></div>
+    <div id="waitingIndicator">
+        <div id="waitingSpinner"></div>
+    </div>
+
+    <script src="assets/player/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach(mutation => {
+                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                        mutation.addedNodes.forEach(node => {
+                            if (node.nodeType === 1) { // Check if it's an element node
+                                const videos = node.querySelectorAll('video');
+                                videos.forEach(video => {
+                                    video.play().catch(err => console.log('Video play error:', err));
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+
+            const stage = document.getElementById('stage');
+            if (stage) {
+                observer.observe(stage, { childList: true, subtree: true });
+            }
+        });
+    </script>
+</body>
+</html>
